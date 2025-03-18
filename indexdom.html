@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document111111111111111111</title>
+</head>
+
+<body>
+    <div id="myId">45646456464</div>
+    <div class="myClass">11111111111111111122222</div>
+    <div class="myClass"></div>
+    <div>| getElementById | 根据元素的 id 选择元素。<br>
+        | getElementsByClassName | 根据元素的类名选择元素，返回一个包含所有匹配元素的 NodeList。 | <br>
+        | getElementsByTagName | 根据元素的标签名选择元素，返回一个包含所有匹配元素的 NodeList。 | <br>
+        | querySelector | 使用 CSS 选择器选择元素，只返回第一个匹配的元素。 | <br>
+        | querySelectorAll | 使用 CSS 选择器选择元素，返回一个包含所有匹配元素的 NodeList。 |</div>
+    <script>
+        // const el = document.getElementById('myId');
+        const el = document.querySelector('#myId');
+        const newEl = document.createElement('div');
+        newEl.textContent = '89898989898!';
+        document.body.appendChild(newEl);
+        console.log(el, '4444444444444444444444');
+        // el.innerHTML = '<strong>Hello, syxy JavaScript!</strong>';
+        el.textContent = 'Hello, syxy JavaScript!';
+        // el.innerText = 'Hello, syxy JavaScript1111111111111!';
+        el.style.color = 'red';
+        el.style.backgroudColor = 'black';
+        document.title = "三亚学院";
+        const el2 = document.querySelector('.myClass');
+        el2.style.color = 'green';
+        el2.style.display = 'none';
+    </script>
+</body>
+
+</html>
