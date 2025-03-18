@@ -14,9 +14,25 @@
         </div>
 
         <div class="input-seciton">
-            <input type="text" id="taskInput" placeholder="请输入新任务......">
+            <input type="text" id="taskInput" placeholder="请输入新任务.....">
             <button id="addBtn">添加任务</button>
         </div>
+
+        <div class="task-controls">
+            <div class="task-filters">
+                <button id="filterAll">全部</button>
+                <button id="filterActive">未完成</button>
+                <button id="filterCompleted">已完成</button>
+            </div>
+            <div class="task-sorts">
+                <button id="sortByName">按名字排序</button>
+                <button id="sortByDate">按日期排序</button>
+            </div>
+        </div>
+        <ul id="taskList">
+
+        </ul>
+        <div class="status" id="status"></div>
     </div>
     <script src="./js/app1.js"></script>
 </body>
