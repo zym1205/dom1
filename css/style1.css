@@ -74,3 +74,47 @@ button:hover {
 .task-sorts button:hover {
   background-color: #e68a00; 
 }
+ul {
+    list-style-type: none;
+}
+li {
+    padding: 12px;
+    margin-bottom: 10px;
+    background-color: #f9f9f9;
+    border-radius: 4px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+li.completed {
+    text-decoration: line-through;
+    color: #888;
+    background-color: #f0f0f0;
+}
+.task-text {
+    flex: 1;
+    margin-right: 10px;
+}
+.task-actions button {
+    padding: 5px 10px;
+    font-size: 14px;
+}
+.delete-btn {
+    background-color: #f44336;
+}
+.delete-btn:hover {
+    background-color: #da190b;
+}
+.complete-btn {
+    background-color: #4CAF50;
+}
+.edit-btn {
+    background-color: #2196F3;
+}
+.stats {
+    margin-top: 20px;
+    padding: 15px;
+    background-color: #f9f9f9;
+    border-radius: 4px;
+    text-align: center;
+}
