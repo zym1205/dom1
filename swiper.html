@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://unpkg.com/swiper@7/swiper-bundle.min.css">
+    <style>
+        .swiper {
+            width: 600px;
+            height: 300px;
+        }
+
+        .swiper-slide {
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            background-color: #f1f1f1;
+        }
+
+        .swiper-slide img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: cover;
+        }
+    </style>
+</head>
+<body>
+    <script src="https://unpkg.com/swiper@8/swiper-bundle.min.js"></script>
+    <div class="swiper">
+        <div class="swiper-wrapper">
+            <div class="swiper-slide"><img src="https://picsum.photos/600/300?random=1" alt="图片1"></div>
+            <div class="swiper-slide"><img src="https://picsum.photos/600/300?random=2" alt="图片2"></div>
+            <div class="swiper-slide"><img src="https://picsum.photos/600/300?random=3" alt="图片3"></div>
+        </div>
+        <div class="swiper-pagination"></div>
+        <div class="swiper-button-prev"></div> 
+        <div class="swiper-button-next"></div>
+    </div>
+    
+    <script>
+        var mySwiper = new Swiper('.swiper', {
+            direction:'horizontal',
+            loop: true,
+            autoplay: false,
+            effect: 'fade',
+            pagination: {
+                el: '.swiper-pagination',
+                clickable: true,
+            },
+            navigation: {
+                nextEl: '.swiper-button-next',
+                prevEl: '.swiper-button-prev',
+            },
+        });
+    </script>
+</body>
+</html>
