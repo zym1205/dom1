@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web存储方式对比：localStorage、sessionStorage和Cookie</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Microsoft YaHei', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f7f9fc;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            padding: 30px;
+            overflow: hidden;
+        }
+        
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 30px;
+            font-weight: 600;
+            font-size: 28px;
+        }
+        
+        h2 {
+            color: #2c3e50;
+            margin-top: 25px;
+            margin-bottom: 15px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #f0f2f5;
+        }
+        
+        h3 {
+            color: #3498db;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+        
+        p {
+            margin-bottom: 15px;
+        }
+        
+        .storage-container {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            margin: 20px 0;
+        }
+        
+        .storage-box {
+            flex: 1;
+            min-width: 300px;
+            margin: 10px;
+            padding: 20px;
+            border-radius: 8px;
+            background-color: #f8f9fa;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s;
+        }
+        
+        .storage-box:hover {
+            transform: translateY(-5px);
+        }
+        
+        .localStorage-box {
+            border-top: 4px solid #3498db;
+        }
+        
+        .sessionStorage-box {
+            border-top: 4px solid #2ecc71;
+        }
+        
+        .cookie-box {
+            border-top: 4px solid #e74c3c;
+        }
+        
+        .code-block {
+            background-color: #f0f3f5;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-family: monospace;
+            margin: 15px 0;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        
+        th, td {
+            padding: 12px 15px;
+            border: 1px solid #e1e4e8;
+            text-align: left;
+        }
+        
+        th {
+            background-color: #f0f3f5;
+            font-weight: 600;
+        }
+        
+        tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+        
+        .demo-section {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: #f0f3f5;
+            border-radius: 8px;
+        }
+        
+        .input-group {
+            margin-bottom: 15px;
+        }
+        
+        .input-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+        
+        .input-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        
+        .btn {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            color: white;
+            font-weight: 600;
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+        
+        .btn-primary {
+            background-color: #3498db;
+        }
+        
+        .btn-success {
+            background-color: #2ecc71;
+        }
+        
+        .btn-danger {
+            background-color: #e74c3c;
+        }
+        
+        .result-box {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: white;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+            min-height: 100px;
+        }
+        
+        .features-list {
+            list-style-type: none;
+        }
+        
+        .features-list li {
+            padding: 8px 0;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .features-list li:last-child {
+            border-bottom: none;
+        }
+        
+        .icon {
+            margin-right: 5px;
+            font-weight: bold;
+            color: #3498db;
+        }
+        
+        .warning {
+            color: #e74c3c;
+            font-weight: bold;
+        }
+        
+        @media (max-width: 768px) {
+            .storage-box {
+                min-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Web存储方式：localStorage、sessionStorage和Cookie</h1>
+        
+        <section>
+            <h2>一、简介</h2>
+            <p>在Web开发中，我们经常需要在客户端存储数据。浏览器提供了三种主要的数据存储方式：localStorage、sessionStorage和Cookie。虽然它们都可以在客户端存储数据，但在用途、存储容量、生命周期等方面有很大不同。</p>
+            
+            <div class="storage-container">
+                <div class="storage-box localStorage-box">
+                    <h3>localStorage</h3>
+                    <p>本地永久存储，除非手动清除，否则数据将一直保存。</p>
+                    <ul class="features-list">
+                        <li><span class="icon">📦</span> 容量：约5MB</li>
+                        <li><span class="icon">⏱️</span> 生命周期：永久（除非手动删除）</li>
+                        <li><span class="icon">🔄</span> 与服务器通信：不会自动发送给服务器</li>
+                        <li><span class="icon">🌐</span> 作用域：同源（同协议、域名、端口）</li>
+                    </ul>
+                </div>
+                
+                <div class="storage-box sessionStorage-box">
+                    <h3>sessionStorage</h3>
+                    <p>会话存储，当页面会话结束（页面关闭）后数据自动清除。</p>
+                    <ul class="features-list">
+                        <li><span class="icon">📦</span> 容量：约5MB</li>
+                        <li><span class="icon">⏱️</span> 生命周期：页面会话期间（页面关闭后删除）</li>
+                        <li><span class="icon">🔄</span> 与服务器通信：不会自动发送给服务器</li>
+                        <li><span class="icon">🌐</span> 作用域：同源+同标签页</li>
+                    </ul>
+                </div>
+                
+                <div class="storage-box cookie-box">
+                    <h3>Cookie</h3>
+                    <p>小型文本数据，主要用于会话管理、个性化和追踪。</p>
+                    <ul class="features-list">
+                        <li><span class="icon">📦</span> 容量：约4KB</li>
+                        <li><span class="icon">⏱️</span> 生命周期：可设置过期时间</li>
+                        <li><span class="icon">🔄</span> 与服务器通信：每次HTTP请求都会自动发送</li>
+                        <li><span class="icon">🌐</span> 作用域：可设置domain和path</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+        
+        <section>
+            <h2>二、三者的主要区别</h2>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th>特性</th>
+                        <th>localStorage</th>
+                        <th>sessionStorage</th>
+                        <th>Cookie</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>生命周期</td>
+                        <td>永久有效，除非手动清除</td>
+                        <td>页面会话结束时清除（关闭页面）</td>
+                        <td>可自定义过期时间，无设置则为会话Cookie</td>
+                    </tr>
+                    <tr>
+                        <td>存储大小</td>
+                        <td>约5MB</td>
+                        <td>约5MB</td>
+                        <td>约4KB</td>
+                    </tr>
+                    <tr>
+                        <td>与服务器通信</td>
+                        <td>不参与服务器通信</td>
+                        <td>不参与服务器通信</td>
+                        <td>每次HTTP请求都会自动发送</td>
+                    </tr>
+                    <tr>
+                        <td>数据操作方式</td>
+                        <td>JavaScript API</td>
+                        <td>JavaScript API</td>
+                        <td>JavaScript或服务器端设置</td>
+                    </tr>
+                    <tr>
+                        <td>可访问性</td>
+                        <td>同源的所有窗口</td>
+                        <td>同源且同一标签页</td>
+                        <td>同源请求（可配置domain和path）</td>
+                    </tr>
+                    <tr>
+                        <td>过期控制</td>
+                        <td>无自动过期机制</td>
+                        <td>关闭浏览器后自动过期</td>
+                        <td>可精确控制过期时间</td>
+                    </tr>
+                    <tr>
+                        <td>适用场景</td>
+                        <td>持久化存储用户偏好设置</td>
+                        <td>单次访问数据（如表单信息）</td>
+                        <td>身份验证、追踪状态</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+        
+        <section>
+            <h2>三、使用场景</h2>
+            
+            <h3>1. localStorage 适用场景</h3>
+            <ul>
+                <li>用户偏好设置（如主题、字体大小）</li>
+                <li>购物车内容</li>
+                <li>已读文章记录</li>
+                <li>网站使用数据（不敏感）</li>
+                <li>离线应用数据缓存</li>
+            </ul>
+            
+            <h3>2. sessionStorage 适用场景</h3>
+            <ul>
+                <li>单次表单填写过程中的数据</li>
+                <li>临时会话数据</li>
+                <li>页面间传递一次性数据</li>
+                <li>避免重复加载的数据缓存</li>
+            </ul>
+            
+            <h3>3. Cookie 适用场景</h3>
+            <ul>
+                <li>用户登录状态管理</li>
+                <li>记住用户登录信息</li>
+                <li>服务器需要读取的信息</li>
+                <li>跟踪用户行为（需遵守隐私法规）</li>
+                <li>个性化用户体验</li>
+            </ul>
+            
+            <p class="warning">注意：不要在任何这些存储方式中保存敏感信息（如密码、信用卡信息），因为它们都存储在用户的浏览器中，可能被恶意脚本获取。</p>
+        </section>
+        
+        <section>
+            <h2>四、代码示例</h2>
+            
+            <h3>1. localStorage 示例</h3>
+            <div class="code-block">
+                // 存储数据<br>
+                localStorage.setItem('username', '张三');<br>
+                localStorage.setItem('theme', 'dark');<br><br>
+                
+                // 获取数据<br>
+                const username = localStorage.getItem('username');<br>
+                console.log(username);  // 输出：张三<br><br>
+                
+                // 删除特定数据<br>
+                localStorage.removeItem('username');<br><br>
+                
+                // 清除所有数据<br>
+                localStorage.clear();
+            </div>
+            
+            <h3>2. sessionStorage 示例</h3>
+            <div class="code-block">
+                // 存储数据<br>
+                sessionStorage.setItem('searchQuery', '手机');<br>
+                sessionStorage.setItem('formData', JSON.stringify({name: '李四', age: 30}));<br><br>
+                
+                // 获取数据<br>
+                const query = sessionStorage.getItem('searchQuery');<br>
+                console.log(query);  // 输出：手机<br><br>
+                
+                // 获取并解析JSON数据<br>
+                const formData = JSON.parse(sessionStorage.getItem('formData'));<br>
+                console.log(formData.name);  // 输出：李四<br><br>
+                
+                // 删除特定数据<br>
+                sessionStorage.removeItem('searchQuery');<br><br>
+                
+                // 清除所有sessionStorage数据<br>
+                sessionStorage.clear();
+            </div>
+            
+            <h3>3. Cookie 示例</h3>
+            <div class="code-block">
+                // 设置Cookie（无过期时间，为会话Cookie）<br>
+                document.cookie = "username=王五";<br><br>
+                
+                // 设置Cookie（有过期时间）<br>
+                const expiryDate = new Date();<br>
+                expiryDate.setMonth(expiryDate.getMonth() + 1); // 一个月后过期<br>
+                document.cookie = `userId=12345; expires=${expiryDate.toUTCString()}`;<br><br>
+                
+                // 设置带路径的Cookie（只在特定路径下可用）<br>
+                document.cookie = "token=abc123; path=/admin";<br><br>
+                
+                // 读取所有Cookie<br>
+                console.log(document.cookie);  // 输出所有Cookie字符串<br><br>
+                
+                // 解析Cookie（简单方法）<br>
+                function getCookie(name) {<br>
+                &nbsp;&nbsp;const cookieArr = document.cookie.split(";");<br>
+                &nbsp;&nbsp;for(let i = 0; i < cookieArr.length; i++) {<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;const cookiePair = cookieArr[i].split("=");<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;if(name === cookiePair[0].trim()) {<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return decodeURIComponent(cookiePair[1]);<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;}<br>
+                &nbsp;&nbsp;}<br>
+                &nbsp;&nbsp;return null;<br>
+                }<br><br>
+                
+                // 删除Cookie（通过设置过期时间为过去）<br>
+                document.cookie = "username=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+            </div>
+        </section>
+        
+        <section class="demo-section">
+            <h2>五、实际操作体验</h2>
+            <p>在下面的演示区域，你可以实际体验这三种存储方式的差异。尝试保存一些数据，然后刷新页面或关闭重开页面，看看哪些数据还存在。</p>
+            
+            <div class="input-group">
+                <label for="keyInput">存储键名：</label>
+                <input type="text" id="keyInput" placeholder="输入键名">
+            </div>
+            
+            <div class="input-group">
+                <label for="valueInput">存储值：</label>
+                <input type="text" id="valueInput" placeholder="输入要存储的值">
+            </div>
+            
+            <div>
+                <button class="btn btn-primary" onclick="saveToLocalStorage()">保存到localStorage</button>
+                <button class="btn btn-success" onclick="saveToSessionStorage()">保存到sessionStorage</button>
+                <button class="btn btn-danger" onclick="saveToCookie()">保存到Cookie</button>
+            </div>
+            
+            <div>
+                <button class="btn btn-primary" onclick="checkLocalStorage()">查看localStorage</button>
+                <button class="btn btn-success" onclick="checkSessionStorage()">查看sessionStorage</button>
+                <button class="btn btn-danger" onclick="checkCookie()">查看Cookie</button>
+            </div>
+            
+            <div>
+                <button class="btn btn-primary" onclick="clearLocalStorage()">清除localStorage</button>
+                <button class="btn btn-success" onclick="clearSessionStorage()">清除sessionStorage</button>
+                <button class="btn btn-danger" onclick="clearCookie()">清除Cookie</button>
+            </div>
+            
+            <div class="result-box" id="resultBox">
+                <p>结果将显示在这里...</p>
+            </div>
+        </section>
+        
+        <section>
+            <h2>六、总结</h2>
+            <p><strong>localStorage</strong>：适合存储长期不变的数据，容量大，永久保存，但不适合敏感信息。</p>
+            <p><strong>sessionStorage</strong>：适合临时会话数据，页面关闭即清除，对于多标签页独立存储。</p>
+            <p><strong>Cookie</strong>：主要用于服务器端需要读取的数据，如身份验证，体积小但会随请求发送，增加网络负担。</p>
+            <p>在选择存储方式时，应考虑数据的生命周期、大小、安全性以及是否需要与服务器交互。</p>
+        </section>
+    </div>
+    
+    <script>
+        const keyInput = document.getElementById('keyInput');
+        const valueInput = document.getElementById('valueInput');
+        const resultBox = document.getElementById('resultBox');
+        window.onload = function(){
+            let message = `欢迎使用web存储演示!<br>`;
+            message += `localStrong中有${localStrong.length}个项目<br>`;
+            message += `sessionStrong中有${sessionStorage.length}个项目<br>`;
+            message += `Cookie: ${document.cookie}<br><br>`;
+            resultBox.innerHTML = `<p>${message}</p>`;
+        }
+        function showResult(message, type){
+            const colors = {
+                primary: '#3498db',
+                success: '#2ecc71',
+                danger: '#e74c3c'
+            }
+            resultBox.innerHTML = `<p style="color:${colors[type]}">${message}</p>`;
+        }
+        function saveToLocalStorage(){
+            localStorage.setItem(keyInput.value, valueInput.value);
+            showResult(`数据已保存到localstorage: ${keyInput.value} = ${valueInput.value}`, 'primary');
+        }
+        function checkLocalStorage() {
+            let allData = '';
+            for(let i = 0; i < localStorage.length; i++) {
+                const key = localStorage.key(i);
+                allData += `${key}=${localStorage.getItem(key)}<br>`;
+            }
+            showResult(allData || 'sessionStorage中没有数据', 'primary');
+        }
+        function clearLocalStorage(){
+            localStorage.clear();
+            showResult('已清除所有sessionStorage数据', 'primary')
+        }
+        function saveToSessionStorage(){
+            sessionStorage.setItem(keyInput.value, valueInput.value);
+            showResult(`数据已保存到sessionstorage:${keyInput.value} = ${valueInput.value}`, 'primary');
+        }
+        function checkLocalStorage(){
+            let allData = '';
+            for(let i = 0; i < sessionStorage.length; i++) {
+                const key = sessionStorage.key(i);
+                allData += `${key}=${sessionStorage.getItem(key)}<br>`;
+            }
+            showResult(allData || 'sessionStorage中没有数据', 'primary');
+        }
+        function clearSessionStorage(){
+            sessionStorage.clear();
+            showResult('已清除所有sessionStorage数据', 'primary');
+        }
+        function saveToCookie(){
+            const expiryDate = new Date();
+            console.log(expiryDate, '222222222222222222');
+            expiryDate.setDate(expiryDate.getDate() + 7);
+            console.log(expiryDate.setDate(expiryDate.getDate() + 7), '333333333333333333333333')
+            document.cookie = `${keyInput.value}=${valueInput.value}; expires=${expiryDate.toUTCString()}; path=/`;
+            console.log(document.cookie,'1111111111111111111111111111111111111111111111111');
+            showResult(`数据已保存到cookie: ${keyInput.value}=${valueInput.value}`,'danger');    
+        }
+        function checkCookie(){
+            console.log(document.cookie.replace(/; /g, '<br>'),'5555555555555555');
+            showResult(`当前所有的cookie<br>${document.cookie.replace(/;/g, '<br>')}`, 'danger');
+        }
+        function clearCookie(){
+            document.cookie.split(";").forEach((cookie)=> {
+                console.log(cookie, '++++++++++++++++++++++++++++')
+                const keyName = cookie.split("=")[0].trim();
+                console.log(keyName, '-------------------------------------')
+                document.cookie = `${keyName}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+            });
+            showResult('已清空所有cookie', 'danger');
+        }
+    </script>
+</body>
+</html> 

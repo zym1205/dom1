@@ -1,0 +1,28 @@
+<div class="container">
+    <h1>人员信息搜索系统</h1>
+    
+    <div class="search-box">
+        <input type="text" class="search-input" id="searchInput" placeholder="请输入姓名或学号后四位/全部学号...">
+        <div class="search-history" id="searchHistory"></div>
+    </div>
+    
+    <div class="table-wrapper">
+        <table>
+            <thead>
+                <tr>
+                    <th>学号</th>
+                    <th>姓名</th>
+                    <th>年龄</th>
+                    <th>部门</th>
+                    <th>职位</th>
+                </tr>
+            </thead>
+            <tbody id="tableBody"></tbody>
+        </table>
+    </div>
+    
+    <div id="noResults" class="no-results">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom: 10px; color: #9ca3af;"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+        <div>没有找到匹配的结果</div>
+    </div>
+</div>

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -34,186 +35,240 @@
         }
 
         .chart {
-            width: 500px;
-            height: 350px;
+            width: 700px;
+            height: 450px;
         }
     </style>
 </head>
+
 <body>
     <h2>图表示例集合</h2>
     <div class="chart-container">
         <div class="chart-box">
             <h3>1.平滑曲线图</h3>
             <div id="lineChart" class="chart"></div>
-    </div>
+        </div>
 
-    <div class="chart-box">
-        <h3>2.基础柱状图</h3>
-        <div id="barChart" class="chart"></div>
-    </div>
+        <div class="chart-box">
+            <h3>2.基础柱状图</h3>
+            <div id="barChart" class="chart"></div>
+        </div>
 
-    <div class="chart-box">
-        <h3>3.基础饼图</h3>
-        <div id="pieChart" class="chart"></div>
-    </div>
+        <div class="chart-box">
+            <h3>3.基础饼图</h3>
+            <div id="pieChart" class="chart"></div>
+        </div>
 
-    <div class="chart-box">
-        <h3>4.散点图</h3>
-        <div id="scatterChart" class="chart"></div>
-    </div>
+        <div class="chart-box">
+            <h3>4.散点图</h3>
+            <div id="scatterChart" class="chart"></div>
+        </div>
 
-    <script>
-        const lineChart = echarts.init(document.querySelector('#lineChart'));
-        const lineOption = {
-            title: {
-                text: '一周销售数据'
-            },
-            tooltip: {
-                trigger: 'axis'
-            },
-            legend: {
-                data: ['销售额']
-            },
-           xAxis: {
-                type:'category',
-                data:['周一','周二','周三','周四','周五','周六','周日']
-           },
-           yAxis:{
-                type:'value',
-                name:'销售额',
-           },
-           series: [{
-                name: '销售额',
-                data: [120, 200, 150, 80, 70, 110, 130],
-                type: 'line',
-                smooth: true,
-                markPoint: {
-                    data: [
-                        { type: 'max', name: '最大值' },
-                        { type: 'min', name: '最小值' }
-                    ]
-                }
-            }]
-        };
-        lineChart.setOption(lineOption);
-        //2柱状图
-        const barChart =echarts.init(document.getElementById('barChart'));
+        <div class="chart-box">
+            <h3>5.雷达图</h3>
+            <div id="radarChart" class="chart"></div>
+        </div>
 
-        const barOption = {
-            titile: {
-                text: '各部门人员数量'
-            },
-            tooltip: {
-                trigger: 'item'
-            },
-            xAxis: {
-                type: 'category',
-                data: ['部门A','部门B','部门C','部门D','部门E']
-            },
-            yAxis: {
-                type: 'value',
-                name: '人数'
-            },
-            series: [{
-                name: '人数',
-                type: 'bar',
-                data: [5, 20, 36, 10, 10],
-                label:{
-                    show: true,
-                    position: 'top'
+
+
+        <script>
+            const lineChart = echarts.init(document.querySelector('#lineChart'));
+            const lineOption = {
+                title: {
+                    text: '一周销售数据'
                 },
-                itemStyle: {
-                    color(params) {
-                        const colors = ['#c23531', '#2f4554', '#61a0a8', 'd48265', '91c7ae'];
-                        return colors[params.dataIndex];
+                tooltip: {
+                    trigger: 'axis'
+                },
+                legend: {
+                    data: ['销售额']
+                },
+                xAxis: {
+                    type: 'category',
+                    data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
+                },
+                yAxis: {
+                    type: 'value',
+                    name: '销售额',
+                },
+                series: [{
+                    name: '销售额',
+                    data: [120, 200, 150, 80, 70, 110, 130],
+                    type: 'line',
+                    smooth: true,
+                    markPoint: {
+                        data: [
+                            { type: 'max', name: '最大值' },
+                            { type: 'min', name: '最小值' }
+                        ]
                     }
-                }
-            }]
-        };
-        barChart.setOption(barOption);
-        //3饼图
-        const pieChart = echarts.init(document.querySelector('#pieChart'));
-        const pieOption = {
-            title: {
-                text: '网站访问来源',
-                left: 'center'
-            },
-            tooltip: {
-                trigger: 'item',
-                formatter: '{a} <br/>{b} : {c} ({d}%)'
-            },
-            legend: {
-                orient: 'vertical',
-                left: 'left',
-                data: ['直接访问', '邮件营销', '联盟广告', '视频广告', '搜索引擎']
-            },
-            series: [
-                {
-                    name: '访问来源',
-                   type: 'pie',
-                   radius: '60%',
-                   center: ['50%', '50%'],
-                   data: [
-                        { value: 335, name: '直接访问' },
-                        { value: 310, name: '邮件营销' },
-                        { value: 234, name: '联盟广告' },
-                        { value: 135, name: '视频广告' },
-                        { value: 1548, name: '搜索引擎' }
-                   ]                   
-                }
-            ]
-        }
-        pieChart.setOption(pieOption);
+                }]
+            };
+            lineChart.setOption(lineOption);
+            //2柱状图
+            const barChart = echarts.init(document.getElementById('barChart'));
 
-        const scatterChart = echarts.init(document.querySelector('#scatterChart'));
-        const scatterOption = {
-            title: {
-                text: '身高体重分布'
-            },
-            tooltip: {
-                trigger: 'item',
-                formatter:function(params){
-                    return `身高: ${params.value[0]} cm<br/>体重:${params.value[1]}kg`
-                }
-            },
-            xAxis: {
-                type: 'value',
-                name: '身高(cm)',
-                min: 140,
-                max: 200
-            },
-            yAxis: {
-                type: 'value',
-                name: '体重(kg)',
-                min: 40,
-                max: 120
-            },
-            series: [
-                {
-                    name: '身高体重',
-                    type: 'scatter',
-                    data: [
-                        [143, 85],
-                        [153, 55],
-                        [158, 90],
-                        [166, 60],
-                        [162, 55],
-                        [180, 70],
-                        [175, 80]
-                    ],
+            const barOption = {
+                titile: {
+                    text: '各部门人员数量'
+                },
+                tooltip: {
+                    trigger: 'item'
+                },
+                xAxis: {
+                    type: 'category',
+                    data: ['部门A', '部门B', '部门C', '部门D', '部门E']
+                },
+                yAxis: {
+                    type: 'value',
+                    name: '人数'
+                },
+                series: [{
+                    name: '人数',
+                    type: 'bar',
+                    data: [5, 20, 36, 10, 10],
+                    label: {
+                        show: true,
+                        position: 'top'
+                    },
                     itemStyle: {
-                        color: '#ff7f50'
+                        color(params) {
+                            const colors = ['#c23531', '#2f4554', '#61a0a8', 'd48265', '91c7ae'];
+                            return colors[params.dataIndex];
+                        }
                     }
-                }
-            ]
-        };
-        scatterChart.setOption(scatterOption);
-        window.addEventListener('resize',function(){
-            lineChart.resize();
-            barChart.resize();
-            pieChart.resize();
-            scatterChart.resize();
-        });
-    </script>
+                }]
+            };
+            barChart.setOption(barOption);
+            //3饼图
+            const pieChart = echarts.init(document.querySelector('#pieChart'));
+            const pieOption = {
+                title: {
+                    text: '网站访问来源',
+                    left: 'center'
+                },
+                tooltip: {
+                    trigger: 'item',
+                    formatter: '{a} <br/>{b} : {c} ({d}%)'
+                },
+                legend: {
+                    orient: 'vertical',
+                    left: 'left',
+                    data: ['直接访问', '邮件营销', '联盟广告', '视频广告', '搜索引擎']
+                },
+                series: [
+                    {
+                        name: '访问来源',
+                        type: 'pie',
+                        radius: '60%',
+                        center: ['50%', '50%'],
+                        data: [
+                            { value: 335, name: '直接访问' },
+                            { value: 310, name: '邮件营销' },
+                            { value: 234, name: '联盟广告' },
+                            { value: 135, name: '视频广告' },
+                            { value: 1548, name: '搜索引擎' }
+                        ]
+                    }
+                ]
+            }
+            pieChart.setOption(pieOption);
+
+            const scatterChart = echarts.init(document.querySelector('#scatterChart'));
+            const scatterOption = {
+                title: {
+                    text: '身高体重分布'
+                },
+                tooltip: {
+                    trigger: 'item',
+                    formatter: function (params) {
+                        return `身高: ${params.value[0]} cm<br/>体重:${params.value[1]}kg`
+                    }
+                },
+                xAxis: {
+                    type: 'value',
+                    name: '身高(cm)',
+                    min: 140,
+                    max: 200
+                },
+                yAxis: {
+                    type: 'value',
+                    name: '体重(kg)',
+                    min: 40,
+                    max: 120
+                },
+                series: [
+                    {
+                        name: '身高体重',
+                        type: 'scatter',
+                        data: [
+                            [143, 85],
+                            [153, 55],
+                            [158, 90],
+                            [166, 60],
+                            [162, 55],
+                            [180, 70],
+                            [175, 80]
+                        ],
+                        itemStyle: {
+                            color: '#ff7f50'
+                        }
+                    }
+                ]
+            };
+            scatterChart.setOption(scatterOption);
+
+            const radarChart1 = echarts.init(document.querySelector('#radarChart'));
+
+            const raderOption = {
+                title: {
+                    text: 'Basic Radar Chart'
+                },
+                legend: {
+                    data: ['Allocated Budget', 'Actual Spending']
+                },
+                radar: {
+                    // shape: 'circle',
+                    indicator: [
+                        { name: 'Sales', max: 6500 },
+                        { name: 'Administration', max: 16000 },
+                        { name: 'Information Technology', max: 30000 },
+                        { name: 'Customer Support', max: 38000 },
+                        { name: 'Development', max: 52000 },
+                        { name: 'Marketing', max: 25000 }
+                    ]
+                },
+                series: [
+                    {
+                        name: 'Budget vs spending',
+                        type: 'radar',
+                        data: [
+                            {
+                                value: [4200, 3000, 20000, 35000, 50000, 18000],
+                                name: 'Allocated Budget'
+                            },
+                            {
+                                value: [5000, 14000, 28000, 26000, 42000, 21000],
+                                name: 'Actual Spending'
+                            }
+                        ]
+                    }
+                ]
+            };
+
+            radarChart1.setOption(raderOption);
+
+
+            window.addEventListener('resize', function () {
+                lineChart.resize();
+                barChart.resize();
+                pieChart.resize();
+                scatterChart.resize();
+                radarChart.resize();
+            });
+
+
+        </script>
 </body>
+
 </html>
