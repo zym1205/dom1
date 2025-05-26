@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .btn{
+            padding: 10px 20px;
+            background: #007bff;
+            color: white;
+            border: none;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .btn:hover{
+            background: #0056b3;
+            transform: scale(1.1);
+        }
+        .fade-in{
+            opacity: 0;
+            animation: fadeIn 1s forwards;
+        }
+        @keyframes fadeIn {
+            from{
+                opacity: 0;
+            }
+            to{
+                opacity: 1;
+            }
+        }
+        .loader{
+            width: 50px;
+            height: 50px;
+            border: 5px solid #f3f3f3;
+            border-radius: 50%;
+            border-top:5px solid #3498db;
+            animation: spin 2s linear infinite;
+        }
+
+        @keyframes spin {
+            0%{
+                transform: rotate(0deg);
+            }
+            100%{
+                transform: rotate(360deg);
+            }
+        }
+        #myDIV{
+            width: 300px;
+            height: 200px;
+            background: red;
+            animation:mymove 5s ease-in-out infinite ;
+            position: absolute;
+            right: 0px;
+            top: 0px;
+        }
+
+        @keyframes mymove{
+            0%{
+                background: red;
+                left: 0px;
+                top: 0px;
+            }
+            25%{
+               background: yellow;
+               left: 200px;
+               top: 0px;
+            }
+            50%{
+                background: blue;
+                left: 200px;
+                top: 200px;
+            }
+            75%{
+                background: green;
+                left: 0px;
+                top: 200px;
+            }
+            100%{
+                background: red;
+                left: 0px;
+                top: 0px;
+            }
+
+        }
+    </style>
+</head>
+<body>
+    <button class="btn">悬停按钮</button>
+    <h1 class="fade-in">动画教学</h1>
+
+    <div style="margin: 20px 0;">
+        <div class="loader"></div>
+    </div>
+    <div id="myDIV"></div>
+    
+</body>
+</html>
