@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ES6模块化开发</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .result {
+            margin: 20px 0;
+            padding: 15px;
+            background-color: #f5f5f5;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>ES6模块化开发示例</h1>
+
+    <div class="result" id="mathResult">数学运算结果将显示在这里</div>
+    <div class="result" id="greetingResult">问候语将显示在这里</div>
+
+    <script type="module">
+        import {add, subtract, PI} from './js/math1.js';
+
+        import sayHello, {sayGoodbye} from './js/greeting1.js';
+
+        const mathResult = document.getElementById('mathResult');
+        mathResult.innerHTML = `<h3>数学运算结果</h3>
+        <p>5+3= ${add(5,3)}</p>
+        <p>5-3= ${subtract(5,3)}</p>
+        <p>圆周率= ${PI}</p>
+        `;
+
+        const greetingResult = document.getElementById('greetingResult');
+        greetingResult.innerHTML = `
+        <h3>问候结果</h3>
+        <p>${sayHello('小明')}</p>
+        <p>${sayGoodbye('小6')}</p>
+        `;
+    </script>
+</body>
+
+</html>

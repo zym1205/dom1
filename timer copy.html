@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JavaScript定时器入门</title>
+    <style>
+        /* 取消所有元素的滚动条 */
+        html, body, pre {
+            scrollbar-width: none; /* Firefox */
+            -ms-overflow-style: none; /* IE and Edge */
+            overflow: hidden; /* 隐藏滚动条但保持可滚动 */
+        }
+        
+        /* Webkit浏览器（Chrome、Safari等）的滚动条隐藏 */
+        html::-webkit-scrollbar, 
+        body::-webkit-scrollbar,
+        pre::-webkit-scrollbar {
+            display: none;
+        }
+        
+        body {
+            font-family: 'Microsoft YaHei', sans-serif;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .box {
+            margin: 15px 0;
+            padding: 10px;
+            background-color: #f5f5f5;
+            border-radius: 5px;
+        }
+        button {
+            padding: 5px 10px;
+            margin-right: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+        .output {
+            margin-top: 10px;
+            font-weight: bold;
+        }
+        
+        /* 确保代码块可以完整显示 */
+        pre {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            max-height: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>JavaScript定时器入门教程</h1>
+    
+    <div class="box">
+        <h2>1. setTimeout - 延迟执行一次</h2>
+        <p>设置一个定时器，在指定的时间后执行一次代码</p>
+        <button id="btn1">3秒后显示消息</button>
+        <div id="output1" class="output"></div>
+        
+        <pre><code>
+// 基本语法
+setTimeout(函数, 延迟时间);
+
+// 例子
+setTimeout(function() {
+    console.log("3秒后执行");
+}, 3000);
+
+// 取消定时器
+let timerId = setTimeout(函数, 延迟时间);
+clearTimeout(timerId);
+        </code></pre>
+    </div>
+    
+    <div class="box">
+        <h2>2. setInterval - 重复执行</h2>
+        <p>设置一个定时器，每隔指定的时间重复执行代码</p>
+        <button id="btn2">开始计数</button>
+        <button id="btn3">停止计数</button>
+        <div id="output2" class="output"></div>
+        
+        <pre><code>
+// 基本语法
+setInterval(函数, 间隔时间);
+
+// 例子
+setInterval(function() {
+    console.log("每秒执行一次");
+}, 1000);
+
+// 取消定时器
+let intervalId = setInterval(函数, 间隔时间);
+clearInterval(intervalId);
+        </code></pre>
+    </div>
+
+    <script>
+        document.getElementById('btn1').addEventListener('click', function () {
+            document.getElementById('output1').textContent = "等待中...3秒后显示信息";
+
+            setTimeout(function () {
+                document.getElementById('output1').textContent = "你好11111111111111111111";
+            }, 3000)
+        })
+
+        let intervalId;
+        let counter = 0;
+
+        document.getElementById('btn2').addEventListener("click", function () {
+            if (intervalId) {
+                return
+            }
+
+            counter = 0;
+            document.getElementById('output2').textContent = "计数: " + counter;
+
+            intervalId = setInterval(function () {
+                counter++;
+                document.getElementById("output2").textContent = "计数: " + counter;
+            }, 1000)
+        })
+
+        document.getElementById('btn3').addEventListener("click", function () {
+            if (intervalId) {
+                clearInterval(intervalId);
+                intervalId = null;
+            }
+
+            document.getElementById('output2').textContent += "计数已停止";
+        })
+    </script>
+</body>
+</html> 

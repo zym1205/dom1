@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* 强制隐藏所有滚动条 */
+        html {
+            overflow: hidden;
+            height: 100%;
+            width: 100%;
+        }
+
+        body {
+            font-family: 'Microsoft YaHei', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background-color: #f0f2f5;
+            color: #333;
+            padding: 20px;
+            height: 100%;
+            width: 100%;
+            overflow-y: auto;
+            overflow-x: hidden;
+            position: fixed;
+        }
+
+        /* 隐藏webkit浏览器的滚动条 */
+        ::-webkit-scrollbar {
+            width: 0px;
+            height: 0px;
+            background: transparent;
+            display: none;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: transparent;
+            display: none;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            padding: 30px;
+            overflow: hidden;
+        }
+
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 30px;
+            font-weight: 600;
+            font-size: 28px;
+        }
+
+        .search-box {
+            position: relative;
+            margin-bottom: 30px;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 14px 20px;
+            font-size: 16px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+            transition: all 0.3s;
+            background-color: #f9fafb;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #4a90e2;
+            box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.2);
+            background-color: #fff;
+        }
+
+        .search-input::placeholder {
+            color: #9ca3af;
+        }
+
+        .search-history {
+            position: absolute;
+            width: 100%;
+            background-color: white;
+            border: 1px solid #e0e0e0;
+            border-top: none;
+            border-radius: 0 0 8px 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            z-index: 10;
+            display: none;
+            overflow: hidden;
+        }
+
+        .history-item {
+            padding: 12px 20px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.2s;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .history-item:last-child {
+            border-bottom: none;
+        }
+
+        .history-item:hover {
+            background-color: #f9fafb;
+        }
+
+        .delete-history {
+            color: #9ca3af;
+            font-size: 16px;
+            margin-left: 10px;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+
+        .delete-history:hover {
+            color: #e53e3e;
+            background-color: rgba(229, 62, 62, 0.1);
+        }
+
+        .table-wrapper {
+            width: 100%;
+            overflow-y: auto;
+            overflow-x: hidden;
+            margin-bottom: 20px;
+            -ms-overflow-style: none;
+            /* IE和Edge */
+            scrollbar-width: none;
+            /* Firefox */
+        }
+
+        .table-wrapper::-webkit-scrollbar {
+            display: none;
+            /* Chrome, Safari, Opera */
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            table-layout: fixed;
+        }
+
+        th,
+        td {
+            padding: 14px 16px;
+            text-align: left;
+            border-bottom: 1px solid #edf2f7;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        th {
+            background-color: #f8fafc;
+            color: #4a5568;
+            font-weight: 600;
+            font-size: 14px;
+            position: sticky;
+            top: 0;
+        }
+
+        tr:hover {
+            background-color: #f9fafb;
+        }
+
+        .no-results {
+            text-align: center;
+            margin-top: 40px;
+            margin-bottom: 40px;
+            color: #6b7280;
+            font-size: 16px;
+            padding: 30px;
+            background-color: #f9fafb;
+            border-radius: 8px;
+            display: none;
+        }
+
+        /* 表格列宽设置 */
+        table th:nth-child(1),
+        table td:nth-child(1) {
+            width: 100px;
+        }
+
+        table th:nth-child(2),
+        table td:nth-child(2) {
+            width: 80px;
+        }
+
+        table th:nth-child(3),
+        table td:nth-child(3) {
+            width: 60px;
+        }
+
+        table th:nth-child(4),
+        table td:nth-child(4) {
+            width: 80px;
+        }
+
+        table th:nth-child(5),
+        table td:nth-child(5) {
+            width: 100px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px 15px;
+                width: 100%;
+                margin: 0;
+                border-radius: 0;
+            }
+
+            body {
+                padding: 0;
+            }
+
+            h1 {
+                font-size: 24px;
+            }
+
+            .search-input {
+                padding: 12px 15px;
+            }
+
+            th,
+            td {
+                padding: 10px 8px;
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>人员信息搜索系统</h1>
+
+        <div class="search-box">
+            <input type="text" class="search-input" id="searchInput" placeholder="请输入姓名或学号后四位/全部学号...">
+            <div class="search-history" id="searchHistory"></div>
+        </div>
+
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>学号</th>
+                        <th>姓名</th>
+                        <th>年龄</th>
+                        <th>部门</th>
+                        <th>职位</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody"></tbody>
+            </table>
+        </div>
+
+        <div id="noResults" class="no-results">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                style="margin-bottom: 10px; color: #9ca3af;">
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            <div>没有找到匹配的结果</div>
+        </div>
+    </div>
+    <script>
+        const dataList = [
+            { id: '2312505002', name: '袁冶', age: 28, department: '技术部', position: '前端开发' },
+            { id: '2312505003', name: '王润姿', age: 32, department: '市场部', position: '市场经理' },
+            { id: '2312505005', name: '郭瑾涵', age: 24, department: '技术部', position: '后端开发' },
+            { id: '2312505006', name: '符明浩', age: 35, department: '行政部', position: '行政主管' },
+            { id: '2312505007', name: '黄钿荃', age: 29, department: '销售部', position: '销售顾问' },
+            { id: '2312505008', name: '张轩', age: 26, department: '技术部', position: '测试工程师' },
+            { id: '2312505010', name: '刘恩助', age: 31, department: '销售部', position: '销售经理' },
+            { id: '2312505012', name: '何思力', age: 27, department: '客服部', position: '客服专员' },
+            { id: '2312505013', name: '邵靖婷', age: 33, department: '研发部', position: '产品经理' },
+            { id: '2312505014', name: '樊青青', age: 25, department: '设计部', position: 'UI设计师' },
+            { id: '2312505015', name: '吴泽轩', age: 28, department: '技术部', position: '前端开发' },
+            { id: '2312505017', name: '尹硕', age: 32, department: '市场部', position: '市场经理' },
+            { id: '2312505018', name: '辛怡洁', age: 24, department: '技术部', position: '后端开发' },
+            { id: '2312505019', name: '孔珊', age: 35, department: '行政部', position: '行政主管' },
+            { id: '2312505020', name: '董晟', age: 29, department: '销售部', position: '销售顾问' },
+            { id: '2312505021', name: '袁嘉隆', age: 26, department: '技术部', position: '测试工程师' },
+            { id: '2312505022', name: '胡曦', age: 31, department: '销售部', position: '销售经理' },
+            { id: '2312505023', name: '惠星宇', age: 27, department: '客服部', position: '客服专员' },
+            { id: '2312505024', name: '葛添羽', age: 33, department: '研发部', position: '产品经理' },
+            { id: '2312505025', name: '钟原', age: 25, department: '设计部', position: 'UI设计师' },
+            { id: '2312505026', name: '程晓岚', age: 28, department: '技术部', position: '前端开发' },
+            { id: '2312505027', name: '金梓轩', age: 32, department: '市场部', position: '市场经理' },
+            { id: '2312505028', name: '徐欣伟', age: 24, department: '技术部', position: '后端开发' },
+            { id: '2312505029', name: '谢显欢', age: 35, department: '行政部', position: '行政主管' },
+            { id: '2312505030', name: '黄佳怡', age: 29, department: '销售部', position: '销售顾问' },
+            { id: '2312505031', name: '徐冰莹', age: 26, department: '技术部', position: '测试工程师' },
+            { id: '2312505032', name: '陆恩圻', age: 31, department: '销售部', position: '销售经理' },
+            { id: '2312505033', name: '吴政霖', age: 27, department: '客服部', position: '客服专员' },
+            { id: '2312505034', name: '羊泰祺', age: 33, department: '研发部', position: '产品经理' },
+            { id: '2312505035', name: '赵宇立', age: 25, department: '设计部', position: 'UI设计师' },
+            { id: '2312505038', name: '文俊宇', age: 28, department: '技术部', position: '前端开发' },
+            { id: '2312505039', name: '李睿', age: 32, department: '市场部', position: '市场经理' },
+            { id: '2312505040', name: '韩雨桐', age: 24, department: '技术部', position: '后端开发' },
+            { id: '2312505041', name: '徐博', age: 35, department: '行政部', position: '行政主管' },
+            { id: '2312505043', name: '苗馨予', age: 29, department: '销售部', position: '销售顾问' },
+            { id: '2312505045', name: '杨子宇', age: 26, department: '技术部', position: '测试工程师' },
+            { id: '2312505046', name: '张雅萌', age: 31, department: '销售部', position: '销售经理' },
+            { id: '2312505047', name: '李一佳', age: 27, department: '客服部', position: '客服专员' },
+            { id: '2312505048', name: '顾嘉鑫', age: 33, department: '研发部', position: '产品经理' },
+            { id: '2312505049', name: '刘镇宇', age: 25, department: '设计部', position: 'UI设计师' },
+            { id: '2312505050', name: '孙家润', age: 28, department: '技术部', position: '前端开发' },
+            { id: '2312505051', name: '马望轩', age: 32, department: '市场部', position: '市场经理' },
+            { id: '2312505052', name: '李宗旭', age: 24, department: '技术部', position: '后端开发' },
+            { id: '2312505053', name: '杨鸣', age: 35, department: '行政部', position: '行政主管' },
+            { id: '2312505054', name: '李东瑾', age: 29, department: '销售部', position: '销售顾问' },
+            { id: '2312505056', name: '王钰涛', age: 26, department: '技术部', position: '测试工程师' },
+            { id: '2312505058', name: '张铭凯', age: 31, department: '销售部', position: '销售经理' },
+            { id: '2312505059', name: '李浩铭', age: 27, department: '客服部', position: '客服专员' },
+            { id: '2312505060', name: '张忠洋', age: 33, department: '研发部', position: '产品经理' }
+        ];
+
+        const searchinput = document.getElementById('searchinput');
+        const searchHistory = document.getElementById('searchHistory');
+        const tableBody = document.getElementById('tableBody');
+        const noResults = document.getElementById('noResults');
+
+        // 定义一个数组为：行本地存储中获取搜索历史的数据或者为空数组
+        let historyList = JSON.parse(localStorage.getItem('searchHistory')) || [];
+
+        // 防抖函数，一定时间内，多次执行，只执行最后一次
+        function debounce(func, delay) {
+            let timer;
+            return function () {
+                clearTimeout(timer);
+                timer = setTimeout(() => {
+                    func.apply(this, arguments);
+                }, delay);
+            }
+        }
+
+        //初始化表格渲染数据
+        function initTable(data) {
+            tableBody.innerHTML = '';
+
+            if (data.length === 0) {
+                noResults.style.display = 'flex';
+                noResults.style.flexDirection = 'column';
+                noResults.style.alignItems = 'center';
+                return
+            }
+
+            noResults.style.display = 'none';
+
+            data.forEach(item => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${item.id}</td>
+                    <td>${item.name}</td>
+                    <td>${item.age}</td>
+                    <td>${item.department}</td>
+                    <td>${item.position}</td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+
+        //搜索函数
+        function searchData(keyword) {
+            if (!keyword) {
+                initTable(dataList);
+                return;
+            }
+
+            const filteredData = dataList.filter(item => {
+                const isNumeric = /^\d+$/.test(keyword);
+                if (isNumeric) {
+                    if (keyword.length === 4) {
+                        return item.id.endsWith(keyword);
+                    } else if (keyword.length === 10) {
+                        return item, id === keyword;
+                    }
+                    return false;
+                } else {
+                    return item.name.toLowerCase().includes(keyword.toLowerCase())
+                }
+            })
+            initTable(filteredData);
+        }
+
+        //添加到搜索历史函数
+        function addToHistory(keyword) {
+            //此时返回的historyList是经过筛选得出的，同时过滤掉相同输入值的新数组
+            historyList = historyList.filter(item => item !== keyword);
+            //把搜索值添加到历史记录开头
+            historyList.unshift(keyword);
+
+            if (historyList.length > 1) {
+                historyList = historyList.slice(0, 1);
+            }
+            localStorage.setItem('searchHistory', JSON.stringify(historyList));
+            renderHistory();
+        }
+
+        // 渲染搜索历史函数
+        function renderHistory() {
+            searchHistory.innerHTML = '';
+            historyList.forEach(item => {
+                console.log(item, '9999999999999999999999');
+                const historyItem = document.createElement('div');
+                historyItem.className = 'history-item';
+
+                const textSpan = document.createElement('span');
+                textSpan.textContent = item;
+                textSpan.style.flexGrow = "1";
+                textSpan.style.cursor = "pointer";
+
+                historyItem.addEventListener('click', function (event) {
+                    if (!event.target.classList.contains("delete-history")) {
+                        searchInput.value = item;
+                        searchHistory.style.display = "none";
+                        searchData(item);
+                    }
+                })
+
+                const deleteBtn = document.createElement("span");
+                deleteBtn.className = "delete-history";
+                deleteBtn.textContent = "X";
+                deleteBtn.addEventListener('click', function (e) {
+                    e.stopPropagation();
+                    deleteHistory(item);
+                });
+
+                historyItem.appendChild(textSpan);
+                historyItem.appendChild(deleteBtn);
+                searchHistory.appendChild(historyItem);
+            });
+        }
+
+        // 删除搜索历史函数
+        function deleteHistory(keyword) {
+            //此时返回的historyList是经过筛选得出的，同时过滤掉相同输入值的新数组
+            historyList = historyList.filter(item => item !== keyword);
+            localStorage.setItem('searchHistory', JSON.stringify(historyList));
+            renderHistory();
+            if (historyList.length === 0) {
+                searchHistory.style.display = 'none';
+            }
+        }
+
+        // 添加按键松开事件来处理完整的搜索历史
+        searchInput.addEventListener('keyup', function (e) {
+            if (e.key === 'Enter') {
+                const keyword = this.value.trim();
+                if (keyword) {
+                    addToHistory(keyword);
+                }
+            }
+        })
+        // 当搜索框失去焦点时也添加到历史记录
+        searchInput.addEventListener('blur', function () {
+            const keyword = this.value.trim();
+            if (keyword) {
+                addToHistory(keyword);
+            }
+        })
+        // 搜索框获取焦点时显示历史记录
+        searchInput.addEventListener('focus', function () {
+            if (historyList.length > 0) {
+                renderHistory();
+                searchHistory.style.display = 'block';
+            }
+        })
+        // 当点击页面其他部分的地方的时候，搜索历史会消失
+        document.addEventListener('click', function (e) {
+            if (!searchInput.contains(e.target) && !searchHistory.contains(e.target)) {
+                searchHistory.style.display = 'none';
+            }
+        })
+
+        //搜索输入事件
+        searchInput.addEventListener('input', debounce(function () {
+            const keyword = searchInput.value.trim();
+            searchData(keyword);
+        }));
+        initTable(dataList);
+    </script>
+</body>
+
+</html>

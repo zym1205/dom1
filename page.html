@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Axios Example</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        #result {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Axios GET Request Example</h1>
+    <button id="fetchButton">Fetch Users</button>
+    <div id="result"></div>
+
+    <!-- 引入Axios库 -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+        document.getElementById('fetchButton').addEventListener('click', function() {
+            axios.get('https://s5.360game.360.cn/to5/mini/v21/category.html')
+                .then(function (response) {
+                    // 处理成功情况
+                    const users = response.data.data;
+                    console.log(users, "-----------------------------");
+                    const resultDiv = document.getElementById('result');
+                    resultDiv.innerHTML = '<h2>Users Found:</h2><ul>' + 
+                        users.map(user => `<li>${user.name}</li>`).join('');
+                    // console.log(response.data.data, "-----------------------------");
+                })
+                .catch(function (error) {
+                    // 处理错误情况
+                    // console.error('There was an error!', error);
+                    // document.getElementById('result').innerHTML = '<p>Error fetching data.</p>';
+                });
+        });
+    </script>
+</body>
+</html>
