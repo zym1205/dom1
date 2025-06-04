@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>四大排序算法</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f9f9f9;
+        }
+
+        .result {
+            margin: 20px 0;
+            padding: 15px;
+            background-color: #ffffff;
+            border-radius: 8px;
+            border-left: 4px solid #007bff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+        }
+
+        h3 {
+            color: #007bff;
+            margin-bottom: 10px;
+        }
+
+        .array-display {
+            background-color: #f8f9fa;
+            padding: 10px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            margin: 10px 0;
+        }
+
+        .original {
+            color: #6c757d;
+        }
+
+        .sorted {
+            color: #28a745;
+            font-weight: bold;
+        }
+
+        .complexity {
+            font-size: 0.9em;
+            color: #6c757d;
+            margin-top: 5px;
+        }
+
+        .btn {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            margin: 5px 5px 10px 0;
+            transition: background-color 0.3s;
+        }
+
+        .btn:hover {
+            background-color: #0056b3;
+        }
+
+        .btn:disabled {
+            background-color: #6c757d;
+            cursor: not-allowed;
+        }
+
+        .reset-btn {
+            background-color: #28a745;
+        }
+
+        .reset-btn:hover {
+            background-color: #218838;
+        }
+
+        .button-group {
+            margin: 10px 0;
+        }
+
+        .current-array {
+            background-color: #e3f2fd;
+            border-left: 4px solid #2196f3;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>四大排序算法演示</h1>
+
+    <div class="result" id="bubbleResult">
+        <h3>冒泡排序 (Bubble Sort)</h3>
+        <div class="complexity">时间复杂度: O(n²) | 空间复杂度: O(1)</div>
+        <div class="current-array" id="bubbleCurrentArray"></div>
+        <div class="button-group">
+            <button class="btn" onclick="runBubbleSort()">执行冒泡排序</button>
+            <button class="btn reset-btn" onclick="resetBubbleArray()">重置数组</button>
+        </div>
+        <div id="bubbleDisplay"></div>
+    </div>
+
+    <div class="result" id="selectionResult">
+        <h3>选择排序 (Selection Sort)</h3>
+        <div class="complexity">时间复杂度: O(n²) | 空间复杂度: O(1)</div>
+        <div class="current-array" id="selectionCurrentArray"></div>
+        <div class="button-group">
+            <button class="btn" onclick="runSelectionSort()">执行选择排序</button>
+            <button class="btn reset-btn" onclick="resetSelectionArray()">重置数组</button>
+        </div>
+        <div id="selectionDisplay"></div>
+    </div>
+
+    <div class="result" id="insertionResult">
+        <h3>插入排序 (Insertion Sort)</h3>
+        <div class="complexity">时间复杂度: O(n²) | 空间复杂度: O(1)</div>
+        <div class="current-array" id="insertionCurrentArray"></div>
+        <div class="button-group">
+            <button class="btn" onclick="runInsertionSort()">执行插入排序</button>
+            <button class="btn reset-btn" onclick="resetInsertionArray()">重置数组</button>
+        </div>
+        <div id="insertionDisplay"></div>
+    </div>
+
+    <div class="result" id="quickResult">
+        <h3>快速排序 (Quick Sort)</h3>
+        <div class="complexity">时间复杂度: O(n log n) | 空间复杂度: O(log n)</div>
+        <div class="current-array" id="quickCurrentArray"></div>
+        <div class="button-group">
+            <button class="btn" onclick="runQuickSort()">执行快速排序</button>
+            <button class="btn reset-btn" onclick="resetQuickArray()">重置数组</button>
+        </div>
+        <div id="quickDisplay"></div>
+    </div>
+
+    <script>
+        // 生成随机数组的函数
+        function generateRandomArray(size=10, min=10, max=99) {
+            const array = [];
+            for (let i = 0; i < size; i++) {
+                array.push(Math.floor(Math.random() * (max - min +1)) + min);
+            }
+            return array;
+        }
+
+        // 为每个排序算法创建不同的随机数组
+        let bubbleArray = generateRandomArray();
+        let selectionArray = generateRandomArray();
+        let insertionArray = generateRandomArray();
+        let quickArray = generateRandomArray();
+
+        // 更新数组显示的函数
+        function updateArrayDisplay(elementId, array, algorithmName) {
+            const element = document.getElementById(elementId);
+            element.innerHTML = `${algorithmName}当前数组: [${array.join(', ')}]`;
+        }
+
+        // 重置各个数组的函数
+        function resetBubbleArray() {
+            bubbleArray = generateRandomArray();
+            updateArrayDisplay('bubbleCurrentArray', bubbleArray, '冒泡排序 - ');
+            document.getElementById('bubbleDisplay').innerHTML = '';
+            console.log('冒泡排序数组已重置:', bubbleArray);
+        }
+
+        function resetSelectionArray() {
+            selectionArray = generateRandomArray();
+            updateArrayDisplay('selectionCurrentArray', selectionArray, '选择排序 - ');
+            document.getElementById('selectionDisplay').innerHTML = '';
+            console.log('选择排序数组已重置:', selectionArray);
+        }
+
+        function resetInsertionArray() {
+            insertionArray = generateRandomArray();
+            updateArrayDisplay('insertionCurrentArray', insertionArray, '插入排序 - ');
+            document.getElementById('insertionDisplay').innerHTML = '';
+            console.log('插入排序数组已重置:', insertionArray);
+        }
+
+        function resetQuickArray() {
+            quickArray = generateRandomArray();
+            updateArrayDisplay('quickCurrentArray', quickArray, '快速排序 - ');
+            document.getElementById('quickDisplay').innerHTML = '';
+            console.log('快速排序数组已重置:', quickArray);
+        }
+
+        // 冒泡排序 - 不修改原数组
+        function bubbleSort(arr) {
+            const array = [...arr];
+            const n = array.length;
+            for (let i = 0; i < n - 1; i++) {
+                for (let j = 0; j <n - i - 1; j++) {
+                    if (array[j] > array[j + 1]) {
+                        [array[j], array[j + 1]] = [array[j + 1], array[j]]
+                    }
+                }
+            }
+            return array;
+        }
+
+        // 选择排序 - 不修改原数组
+        function selectionSort(arr){
+            const array = [...arr];
+            const n = array.length;
+            for (let i = 0; i < n - 1; i++) {
+                let minIndex = i;
+                for (let j = i + 1; j < n; j++) {
+                    if (array[j] < array[minIndex]) {
+                        minIndex = j;
+                    }
+                }
+                [array[i], array[minIndex]] = [array[minIndex], array[i]];
+            }
+            return array;
+        }
+
+        // 插入排序 - 不修改原数组
+        function insertionSort(arr) {
+            const array = [...arr];
+            const n = array.length;
+            for (let i = 1; i < n; i++) {
+                let key = array[i];
+                let j = i - 1;
+                while (j >= 0 && array[j] > key) {
+                    array[j + 1] = array[j];
+                    j--;
+                }
+                array[j + 1] = key;
+            }
+            return array;
+        }
+
+        // 快速排序 - 不修改原数组
+        function quickSort(arr) {
+            if (arr.length <= 1) return [...arr];
+            const array = [...arr];
+            const pivot = array[array.length - 1];
+            const left = [];
+            const right = [];
+
+            for (let i = 0; i < array.length - 1; i++) {
+                if (array[i] < pivot) {
+                    left.push(array[i]);
+                } else {
+                    right.push(array[i]);
+                }
+            }
+
+            return [...quickSort(left), pivot, ...quickSort(right)];
+        }
+
+        // 显示结果的函数
+        function displayResult(elementId, originalArray, sortedArray) {
+            const element = document.getElementById(elementId);
+            element.innerHTML = `
+        <div class="array-display original">排序前: [${originalArray.join(', ')}]</div>
+        <div class="array-display sorted">排序后: [${sortedArray.join(', ')}]</div>
+      `;
+        }
+
+        // 执行冒泡排序
+        function runBubbleSort() {
+            console.log('执行冒泡排序，当前数组:', bubbleArray);
+            const originalArray = [...bubbleArray]; // 保存原数组副本
+            const sortedArray = bubbleSort(bubbleArray); // 排序操作不会修改原数组
+            // 不修改 bubbleArray，保持当前数组显示不变
+            displayResult('bubbleDisplay', originalArray, sortedArray);
+            console.log('冒泡排序完成:', sortedArray);
+        }
+
+        // 执行选择排序
+        function runSelectionSort() {
+            console.log('执行选择排序，当前数组:', selectionArray);
+            const originalArray = [...selectionArray]; // 保存原数组副本
+            const sortedArray = selectionSort(selectionArray); // 排序操作不会修改原数组
+            // 不修改 selectionArray，保持当前数组显示不变
+            displayResult('selectionDisplay', originalArray, sortedArray);
+            console.log('选择排序完成:', sortedArray);
+        }
+
+        // 执行插入排序
+        function runInsertionSort() {
+            console.log('执行插入排序，当前数组:', insertionArray);
+            const originalArray = [...insertionArray]; // 保存原数组副本
+            const sortedArray = insertionSort(insertionArray); // 排序操作不会修改原数组
+            // 不修改 insertionArray，保持当前数组显示不变
+            displayResult('insertionDisplay', originalArray, sortedArray);
+            console.log('插入排序完成:', sortedArray);
+        }
+
+        // 执行快速排序
+        function runQuickSort() {
+            console.log('执行快速排序，当前数组:', quickArray);
+            const originalArray = [...quickArray]; // 保存原数组副本
+            const sortedArray = quickSort(quickArray); // 排序操作不会修改原数组
+            // 不修改 quickArray，保持当前数组显示不变
+            displayResult('quickDisplay', originalArray, sortedArray);
+            console.log('快速排序完成:', sortedArray);
+        }
+
+        // 页面加载完成后初始化
+        document.addEventListener('DOMContentLoaded', function () {
+            // 初始化显示所有数组
+            updateArrayDisplay('bubbleCurrentArray', bubbleArray, '冒泡排序 - ');
+            updateArrayDisplay('selectionCurrentArray', selectionArray, '选择排序 - ');
+            updateArrayDisplay('insertionCurrentArray', insertionArray, '插入排序 - ');
+            updateArrayDisplay('quickCurrentArray', quickArray, '快速排序 - ');
+
+            console.log('页面初始化完成');
+            console.log('冒泡排序初始数组:', bubbleArray);
+            console.log('选择排序初始数组:', selectionArray);
+            console.log('插入排序初始数组:', insertionArray);
+            console.log('快速排序初始数组:', quickArray);
+        });
+    </script>
+</body>
+
+</html>

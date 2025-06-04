@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GSAP FromTo 动画演示</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            overflow-x: hidden;
+            min-height: 200vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 50px 20px;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 100px;
+        }
+        
+        .main-title {
+            font-size: 3.5rem;
+            font-weight: 300;
+            margin-bottom: 20px;
+            background: linear-gradient(45deg, #fff, #f0f0f0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.8;
+            font-weight: 300;
+        }
+        
+        .demo-section {
+            margin: 150px 0;
+            padding: 60px 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .section-title {
+            font-size: 2rem;
+            text-align: center;
+            margin-bottom: 50px;
+            font-weight: 300;
+        }
+        
+        .demo-content {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            gap: 30px;
+        }
+        
+        /* 时间控制动画元素 */
+        .time-element {
+            width: 120px;
+            height: 120px;
+            background: linear-gradient(45deg, #ff6b6b, #ffd93d);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            font-weight: 500;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+        
+        .time-element:hover {
+            transform: translateY(-5px);
+        }
+        
+        /* 滚动控制动画元素 */
+        .scroll-element {
+            width: 140px;
+            height: 140px;
+            background: linear-gradient(45deg, #4ecdc4, #44a08d);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            font-weight: 500;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+        }
+        
+        .description {
+            text-align: center;
+            font-size: 1.1rem;
+            opacity: 0.9;
+            max-width: 500px;
+            line-height: 1.6;
+        }
+        
+        .scroll-hint {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            opacity: 0.7;
+            animation: bounce 2s infinite;
+        }
+        
+        .scroll-hint span {
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+        }
+        
+        .scroll-arrow {
+            width: 2px;
+            height: 30px;
+            background: white;
+            position: relative;
+        }
+        
+        .scroll-arrow::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: -3px;
+            width: 8px;
+            height: 8px;
+            border-right: 2px solid white;
+            border-bottom: 2px solid white;
+            transform: rotate(45deg);
+        }
+        
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateX(-50%) translateY(0);
+            }
+            40% {
+                transform: translateX(-50%) translateY(-10px);
+            }
+            60% {
+                transform: translateX(-50%) translateY(-5px);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .main-title {
+                font-size: 2.5rem;
+            }
+            
+            .demo-section {
+                margin: 80px 0;
+                padding: 40px 20px;
+            }
+            
+            .time-element, .scroll-element {
+                width: 100px;
+                height: 100px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1 class="main-title">GSAP FromTo</h1>
+            <p class="subtitle">优雅的动画控制演示</p>
+        </div>
+        
+        <!-- 时间控制动画 -->
+        <div class="demo-section">
+            <h2 class="section-title">时间控制动画</h2>
+            <div class="demo-content">
+                <div class="time-element" id="timeElement">自动循环</div>
+                <p class="description">
+                    这个元素展示了fromTo方法的时间控制能力，
+                    从初始状态平滑过渡到目标状态，并可以无限循环
+                </p>
+            </div>
+        </div>
+        
+        <!-- 滚动控制动画 -->
+        <div class="demo-section">
+            <h2 class="section-title">滚动控制动画</h2>
+            <div class="demo-content">
+                <div class="scroll-element" id="scrollElement">滚动触发</div>
+                <p class="description">
+                    当您滚动到这个区域时，元素将从指定的起始状态
+                    优雅地变换到最终状态，展示fromTo的精确控制
+                </p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="scroll-hint">
+        <span>向下滚动</span>
+        <div class="scroll-arrow"></div>
+    </div>
+
+    <script>
+    // 动画功能（东西，状态，另一个状态）
+        gsap.registerPlugin(ScrollTrigger);
+
+        gsap.fromTo(".main-title", {
+            y: -50,
+            opacity: 0
+        }, {
+            y: 0,
+            opacity: 1,
+            duration: 1,
+            ease: "power3.out"
+        });
+
+        gsap.fromTo(".subtitle", {
+            y: 30,
+            opacity: 0
+        }, {
+            y: 0,
+            opacity: 1,
+            duration: 1,
+            delay: 0.3,
+            ease: "power3.out"
+        });
+
+        gsap.fromTo(".demo-section", {
+            y: 50,
+            opacity: 0
+        }, {
+            y: 0,
+            opacity: 1,
+            duration: 1,
+            delay: 0.8,
+            stagger: 0.3,
+            ease: "power3.out"
+        });
+
+        gsap.fromTo("#timeElement", {
+            rotation: 0,
+            scale: 1,
+            borderRadius: "20px"
+        }, {
+            rotation: 360,
+            scale: 1.2,
+            borderRadius: "50%",
+            duration: 3,
+            repeat: -1, // 无限循环
+            yoyo: true,  // 动画结束之后反向播放
+            ease: "power3.inOut"
+        });
+
+        gsap.fromTo("#scrollElement", {
+            x: -200,
+            opacity: 0,
+            scale: 0.3,
+            rotation: -180,
+        }, {
+            x: 0,
+            opacity: 1,
+            scale: 1,
+            rotation: 0,
+            duration: 1.5,
+            ease: "back.out(1.7)",
+            scrollTrigger: {
+                trigger: "#scrollElement",
+                start: "top 80%",
+                end: "top 30%",
+                scrub: false, // 不跟随滚动进度，是触发式动画
+                toggleActions: "play reverse play reverse",
+                onEnter: () => {
+                    gsap.to(".scroll-hint", {
+                        opacity: 0,
+                        duration: 0.5
+                    });
+                },
+                onLeave: () => {
+                    console.log("onLeave");
+                },
+                onEnterBack: () => {
+                    console.log("onEnterBack");
+                },
+                onLeaveBack: () => {
+                    console.log("onLeaveBack");
+                    gsap.to(".scroll-hint", {
+                        opacity: 0.7,
+                        duration: 0.5
+                    })
+                }
+            }
+        })
+            
+    </script>
+</body>
+</html>

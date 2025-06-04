@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JavaScript数据处理 - 简化版</title>
+    <style>
+        body {
+            font-family: 'Microsoft YaHei', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+        h1 { text-align: center; color: #333; }
+        h2 { color: #007acc; border-bottom: 2px solid #007acc; padding-bottom: 8px; }
+        .demo {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 15px 0;
+            border-left: 4px solid #007acc;
+        }
+        .demo h3 { color: #dc3545; margin-top: 0; }
+        .data { 
+            background: #f1f3f4; 
+            padding: 10px; 
+            border-radius: 5px; 
+            font-family: monospace; 
+            margin: 10px 0;
+        }
+        .result { 
+            background: #e7f3ff; 
+            padding: 10px; 
+            border-radius: 5px; 
+            font-family: monospace; 
+            margin: 10px 0;
+            transition: all 0.3s ease;
+        }
+        .result.hidden { 
+            opacity: 0; 
+            height: 0; 
+            padding: 0; 
+            margin: 0; 
+            overflow: hidden; 
+        }
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+            transition: all 0.2s;
+        }
+        .btn:hover { transform: translateY(-2px); }
+        .btn.active { background: linear-gradient(135deg, #28a745 0%, #20c997 100%); }
+        .controls { text-align: center; margin: 15px 0; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚀 JavaScript数据处理演示</h1>
+        
+        <h2>🔥 数组方法</h2>
+        
+        <div class="demo">
+            <h3>map() - 数组转换</h3>
+            <div class="data">原始分数: [85, 92, 78, 96, 88]</div>
+            <div class="controls">
+                <button class="btn" onclick="toggle('map-result', this, mapDemo)">转换为等级</button>
+            </div>
+            <div class="result hidden" id="map-result"></div>
+        </div>
+
+        <div class="demo">
+            <h3>filter() - 数组筛选</h3>
+            <div class="data">学生: [{name:'张三',score:85}, {name:'李四',score:92}, {name:'王五',score:78}]</div>
+            <div class="controls">
+                <button class="btn" onclick="toggle('filter-result', this, filterDemo)">筛选优秀学生</button>
+            </div>
+            <div class="result hidden" id="filter-result"></div>
+        </div>
+
+        <div class="demo">
+            <h3>reduce() - 数组归纳</h3>
+            <div class="data">销售额: [1200, 2300, 1800, 2500]</div>
+            <div class="controls">
+                <button class="btn" onclick="toggle('reduce-result', this, reduceDemo)">计算总额</button>
+            </div>
+            <div class="result hidden" id="reduce-result"></div>
+        </div>
+
+        <div class="demo">
+            <h3>sort() - 数组排序</h3>
+            <div class="data">产品: [{name:'手机',price:3000}, {name:'电脑',price:8000}]</div>
+            <div class="controls">
+                <button class="btn" onclick="toggle('sort-result', this, () => sortDemo('asc'))">价格升序</button>
+                <button class="btn" onclick="toggle('sort-result', this, () => sortDemo('desc'))">价格降序</button>
+            </div>
+            <div class="result hidden" id="sort-result"></div>
+        </div>
+
+        <h2>🎯 对象方法</h2>
+
+        <div class="demo">
+            <h3>Object.keys() / values()</h3>
+            <div class="data">用户: {name:'李明', age:28, city:'北京'}</div>
+            <div class="controls">
+                <button class="btn" onclick="toggle('keys-result', this, () => keysDemo('keys'))">获取属性名</button>
+                <button class="btn" onclick="toggle('keys-result', this, () => keysDemo('values'))">获取属性值</button>
+            </div>
+            <div class="result hidden" id="keys-result"></div>
+        </div>
+
+        <div class="demo">
+            <h3>Object.assign() - 对象合并</h3>
+            <div class="data">默认: {theme:'light'} + 用户: {theme:'dark', size:16}</div>
+            <div class="controls">
+                <button class="btn" onclick="toggle('assign-result', this, assignDemo)">合并对象</button>
+            </div>
+            <div class="result hidden" id="assign-result"></div>
+        </div>
+
+        <div class="demo">
+            <h3>解构赋值 + 展开运算符</h3>
+            <div class="data">产品: {id:1, name:'手机', price:2999}</div>
+            <div class="controls">
+                <button class="btn" onclick="toggle('destruct-result', this, destructDemo)">解构提取</button>
+                <button class="btn" onclick="toggle('destruct-result', this, spreadDemo)">展开克隆</button>
+            </div>
+            <div class="result hidden" id="destruct-result"></div>
+        </div>
+
+        <h2>💪 综合示例</h2>
+        
+        <div class="demo">
+            <h3>销售数据分析</h3>
+            <div class="data">销售: [{product:'手机',price:3000,qty:2}, {product:'电脑',price:8000,qty:1}]</div>
+            <div class="controls">
+                <button class="btn" onclick="toggle('analysis-result', this, analysisDemo)">数据分析</button>
+            </div>
+            <div class="result hidden" id="analysis-result"></div>
+        </div>
+    </div>
+
+    <script>
+        // 测试数据
+        const scores = [85, 92, 78, 96, 88];
+        const students = [{name:'张三',score:85}, {name:'李四',score:92}, {name:'王五',score:78}];
+        const salesAmounts = [1200, 2300, 1800, 2500];
+        const products = [{name:'手机',price:3000}, {name:'电脑',price:8000}, {name:'平板',price:2000}];
+        const user = {name:'李明', age:28, city:'北京'};
+        const salesData = [{product:'手机',price:3000,qty:2}, {product:'电脑',price:8000,qty:1}];
+
+        function toggle(resultId, button, callback) {
+            const result = document.getElementById(resultId);
+
+            if (result.classList.contains("hidden")){
+                result.innerHTML = callback();
+                result.classList.remove("hidden");
+                button.classList.add("active");
+                //清楚同组其他按钮状态
+                button.parentElement.querySelectorAll(".btn").forEach((btn)=>{
+                    if (btn !== button) {
+                    btn.classList.remove("active");
+                    }
+                });
+             } else {
+                result.classList.add("hidden");
+                button.classList.remove("active");
+             }
+        }
+        function mapDemo() {
+            const grades = scores.map((score) => {
+            return score >= 90 ? '优秀': score >= 80 ?'良好': "合格";
+            })
+            return`等级: ${JSON.stringify(grades)}`
+        }
+
+        function filterDemo() {
+            const excellent = students.filter(student => student.score >= 90);
+            return`优秀学生：${JSON.stringify(excellent)}`;
+        }
+
+        function reduceDemo() {
+            const total = salesAmounts.reduce((sum, amount) => sum + amount, 0);
+            const avg = (total/salesAmounts.length).toFixed(0);
+            return`总额:${total.toLocaleString()}，平均值：${avg}`;
+        }
+
+        function sortDemo(order){
+            const sorted = [...products].sort((a, b) => {
+                return order === 'asc' ? a.price - b.price : b.price - a.price;
+            });
+            return `${order=='asc' ? '升序' : '降序'}: ${JSON.stringify(sorted)}`
+        }
+
+        function keysDemo(type){
+            if (type === 'keys') {
+                return `属性名: ${JSON.stringify(Object.keys(user))}`;
+            } else {
+                return `属性值: ${JSON.stringify(Object.values(user))}`;
+            }
+        }
+
+        function assignDemo() {
+            const defaults = {theme: 'light',lang: 'zh'};
+            const userSettings = {theme: 'dark', size: 16};
+            const merged = Object.assign({}, defaults, userSettings);
+            return`合并结果: ${JSON.stringify(merged)}`
+        }
+
+        function destructDemo(){
+            const product = {id: 1,name:'手机',price: 2999};
+            const {name, price} = product;
+            return`解构提取: name=${name},price=${price}`;
+        }
+
+        function spreadDemo(){
+            const original = {id: 1,name: '手机',price: 2999};
+            const update = {...original,price: 8888, discount: 0.1};
+            return`展开更新:${JSON.stringify(update)}`;
+        }
+
+        function analysisDemo() {
+            const totalRevenue = salesData.reduce((sum, item) => sum + (item.price * item.qty), 0);
+            const productCount = salesData.length;
+            const avgPrice = Math.round(totalRevenue / salesData.reduce((sum, item) => sum + item.qty, 0));
+
+            return`总收入:${totalRevenue.toLocaleString()}<br>产品数:${productCount}<br>平均价格:${avgPrice}`;
+        }
+
+
+    </script>
+</body>
+</html> 

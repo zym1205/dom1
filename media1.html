@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="css/md.css">
+</head>
+<body>
+    <div class="responsive-indicator">
+        屏幕宽度: <span id="Width"></span>px
+    </div>
+    <h1>css媒体查询 - 响应式卡片布局</h1>
+
+    <div class="info-section">
+        <h2>媒体查询演示</h2>
+        <p>这个页面展示了CSS媒体查询的强大功能。调整浏览器窗口大小，观察卡片布局的变化：</p>
+        <p>• 正常屏幕（>1560px）：每行显示 5 个卡片</p>
+        <p>• 中等屏幕（≤1560px）：每行显示 4 个卡片</p>
+        <p>• 小屏幕（≤1280px）：每行显示 3 个卡片</p>
+        <p>• 移动设备（≤768px）：每行显示 2 个卡片</p>
+    </div>
+
+    <div class="container"> 
+        <div class="card">
+            <div class="card-icon"><img src="./img/pic2.png" alt=""></div>
+            <h2>响应式设计</h2>
+            <p>媒体查询让网页能够根据不同设备的屏幕尺寸自动调整布局，提供最佳的用户体验。</p>
+        </div>
+        <div class="card">
+            <div class="card-icon"><img src="./img/pic2.png" alt=""></div>
+            <h2>响应式设计</h2>
+            <p>媒体查询让网页能够根据不同设备的屏幕尺寸自动调整布局，提供最佳的用户体验。</p>
+        </div>
+        <div class="card">
+            <div class="card-icon"><img src="./img/pic2.png" alt=""></div>
+            <h2>响应式设计</h2>
+            <p>媒体查询让网页能够根据不同设备的屏幕尺寸自动调整布局，提供最佳的用户体验。</p>
+        </div>
+        <div class="card">
+            <div class="card-icon"><img src="./img/pic2.png" alt=""></div>
+            <h2>响应式设计</h2>
+            <p>媒体查询让网页能够根据不同设备的屏幕尺寸自动调整布局，提供最佳的用户体验。</p>
+        </div>
+        <div class="card">
+            <div class="card-icon"><img src="./img/pic2.png" alt=""></div>
+            <h2>响应式设计</h2>
+            <p>媒体查询让网页能够根据不同设备的屏幕尺寸自动调整布局，提供最佳的用户体验。</p>
+        </div>
+        <div class="card">
+            <div class="card-icon"><img src="./img/pic2.png" alt=""></div>
+            <h2>响应式设计</h2>
+            <p>媒体查询让网页能够根据不同设备的屏幕尺寸自动调整布局，提供最佳的用户体验。</p>
+        </div>
+        <div class="card">
+            <div class="card-icon"><img src="./img/pic2.png" alt=""></div>
+            <h2>响应式设计</h2>
+            <p>媒体查询让网页能够根据不同设备的屏幕尺寸自动调整布局，提供最佳的用户体验。</p>
+        </div>
+        <div class="card">
+            <div class="card-icon"><img src="./img/pic2.png" alt=""></div>
+            <h2>响应式设计</h2>
+            <p>媒体查询让网页能够根据不同设备的屏幕尺寸自动调整布局，提供最佳的用户体验。</p>
+        </div>
+        <div class="card">
+            <div class="card-icon"><img src="./img/pic2.png" alt=""></div>
+            <h2>响应式设计</h2>
+            <p>媒体查询让网页能够根据不同设备的屏幕尺寸自动调整布局，提供最佳的用户体验。</p>
+        </div>
+        <div class="card">
+            <div class="card-icon"><img src="./img/pic2.png" alt=""></div>
+            <h2>响应式设计</h2>
+            <p>媒体查询让网页能够根据不同设备的屏幕尺寸自动调整布局，提供最佳的用户体验。</p>
+        </div>
+    </div>
+    <script>
+        function updatedWidth(){
+        document.getElementById('width').textContent = window.innerWidth;
+        }
+        updatedwidth();
+        window.addEventListener('resize', updatedwidth);
+</script>
+</body>
+</html>
